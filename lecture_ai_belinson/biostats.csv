@@ -1,0 +1,94 @@
+id,sex,age," ""Height (in)"""," ""Weight (lbs)""",weight,height,bmi,immigrant_date,sector,covid,is_immigrant,city,district
+1,M,28,74,170,77.11,1.88,21.81699864,,general,0,0,Haifa,north
+2,M,31,48,166,80,1.6,31.25,,general,0,0,Nahariah,north
+3,M,42,70,155,80.31,1.68,28.4545068,02/03/1980,general,0,1,Tel Aviv,center
+5,M,39,72,167,70,1.73,23.38868656,,haredi,1,0,Beer Sheva,south
+6,F,30,66,124,76.25,1.78,24.06577452,,haredi,1,0,Jerusalem,center
+7,F,33,66,115,,,,,general,0,0,Tel Aviv,center
+8,F,26,64,121,,,,,haredi,1,0,Ramat Gan,centerr
+9,F,30,71,158,100,1.8,30.86419753,02/03/1990,arab,1,1,Nahariah,north
+10,M,53,72,175,79.38,1.83,23.70330556,,general,0,0,Jerusalem,center
+11,M,32,69,143,,,,,arab,0,0,Jerusalem,center
+12,F,47,69,139,100,1.75,32.65306122,31/12/1970,haredi,1,1,Tel Aviv,center
+13,M,34,72,163,73.94,1.83,22.07889158,,general,0,0,Beer Sheva,south
+14,F,23,62,98,44.45,1.57,18.03318593,,arab,0,0,Tel Aviv,center
+15,M,36,75,160,72.57,1.61,27.99660507,31/12/1994,general,1,1,Haifa,north
+16,M,38,70,145,65.77,1.78,20.75811135,,arab,1,0,Jerusalem,center
+17,F,31,67,135,61.23,1.7,21.18685121,,general,0,0,Tel Aviv,center
+18,M,29,71,176,90,1.8,27.77777778,04/12/1932,haredi,1,1,Eilat,south
+19,F,28,65,131,59.42,1.65,21.82552801,,general,0,0,Beer Sheva,south
+20,M,28,74,170,77.11,1.88,21.81699864,,general,0,0,Haifa,north
+21,M,31,48,166,90,1.22,60.46761623,,general,0,0,Nahariah,north
+22,M,42,70,155,70.31,1.78,22.19101124,02/03/1980,general,0,1,Tel Aviv,center
+23,M,39,72,167,70,1.53,29.90302875,,general,1,0,Beer Sheva,south
+24,F,30,66,124,56.25,1.68,19.92984694,,haredi,1,0,Jerusalem,center
+25,F,33,66,115,,,,,general,0,0,Tel Aviv,center
+26,F,26,64,121,,,,,haredi,1,0,Ramat Gan,centerr
+27,F,30,71,158,100,1.8,30.86419753,02/03/1990,arab,1,1,Nahariah,north
+28,M,53,72,175,79.38,1.83,23.70330556,,general,0,0,Jerusalem,center
+29,M,32,69,143,,,,,arab,0,0,Jerusalem,center
+30,F,47,69,139,100,1.75,32.65306122,31/12/1970,haredi,1,1,Tel Aviv,center
+31,M,34,72,163,73.94,1.83,22.07889158,,general,0,0,Beer Sheva,south
+32,F,23,62,98,44.45,1.57,18.03318593,,arab,0,0,Tel Aviv,center
+33,M,36,75,160,72.57,1.91,19.89254681,31/12/1994,general,1,1,Haifa,north
+34,M,38,70,145,65.77,1.78,20.75811135,,arab,1,0,Jerusalem,center
+35,F,31,67,135,61.23,1.7,21.18685121,,general,0,0,Tel Aviv,center
+36,M,29,71,176,90,1.8,27.77777778,04/12/1932,haredi,1,1,Eilat,south
+37,F,28,65,131,59.42,1.65,21.82552801,,general,0,0,Beer Sheva,south
+38,M,28,74,170,77.11,1.88,21.81699864,,general,0,0,Haifa,north
+39,M,31,48,166,90,1.22,60.46761623,,general,0,0,Nahariah,north
+40,M,42,70,155,70.31,1.78,22.19101124,02/03/1980,haredi,0,1,Tel Aviv,center
+41,M,39,72,167,60,1.83,17.91633074,,haredi,1,0,Beer Sheva,south
+42,F,30,66,124,56.25,1.68,19.92984694,,haredi,1,0,Jerusalem,center
+43,F,33,66,115,,,,,general,0,0,Tel Aviv,center
+44,F,26,64,121,,,,,haredi,1,0,Ramat Gan,centerr
+45,F,30,71,158,100,1.8,30.86419753,02/03/1990,arab,1,1,Nahariah,north
+46,M,53,72,175,79.38,1.83,23.70330556,,general,0,0,Jerusalem,center
+47,M,32,69,143,,,,,arab,0,0,Jerusalem,center
+48,F,47,69,139,100,1.75,32.65306122,31/12/1970,haredi,1,1,Tel Aviv,center
+49,M,34,72,163,73.94,1.83,22.07889158,,general,0,0,Beer Sheva,south
+50,F,23,62,98,44.45,1.57,18.03318593,,arab,0,0,Tel Aviv,center
+51,M,36,75,160,72.57,1.91,19.89254681,31/12/1994,general,1,1,Haifa,north
+52,M,38,70,145,65.77,1.78,20.75811135,,arab,1,0,Jerusalem,center
+53,F,31,67,135,61.23,1.7,21.18685121,,general,0,0,Tel Aviv,center
+54,M,29,71,176,90,1.8,27.77777778,04/12/1932,haredi,1,1,Eilat,south
+55,F,28,65,131,59.42,1.65,21.82552801,,general,0,0,Beer Sheva,south
+56,M,28,74,170,77.11,1.88,21.81699864,,general,0,0,Haifa,north
+57,M,31,48,166,90,1.5,40,,general,0,0,Nahariah,north
+58,M,42,70,155,70.31,1.78,22.19101124,02/03/1980,haredi,0,1,Tel Aviv,center
+59,M,39,72,167,60,1.83,17.91633074,,haredi,1,0,Beer Sheva,south
+60,F,30,66,124,56.25,1.68,19.92984694,,haredi,1,0,Jerusalem,center
+61,F,33,66,115,,,,,general,0,0,Tel Aviv,center
+62,F,26,64,121,,,,,haredi,1,0,Ramat Gan,centerr
+63,F,30,71,158,100,1.8,30.86419753,02/03/1990,arab,1,1,Nahariah,north
+64,M,53,72,175,79.38,1.83,23.70330556,,general,0,0,Jerusalem,center
+65,M,32,69,143,,,,,arab,0,0,Jerusalem,center
+66,F,47,69,139,100,1.75,32.65306122,31/12/1970,haredi,1,1,Tel Aviv,center
+67,M,34,72,163,73.94,1.83,22.07889158,,general,0,0,Beer Sheva,south
+68,F,23,62,98,44.45,1.57,18.03318593,,arab,0,0,Tel Aviv,center
+69,M,36,75,160,72.57,1.91,19.89254681,31/12/1994,general,1,1,Haifa,north
+70,M,38,70,145,65.77,1.78,20.75811135,,arab,1,0,Jerusalem,center
+71,F,31,67,135,61.23,1.7,21.18685121,,general,0,0,Tel Aviv,center
+72,M,29,71,176,90,1.8,27.77777778,04/12/1932,haredi,1,1,Eilat,south
+73,F,28,65,131,59.42,1.65,21.82552801,,general,0,0,Beer Sheva,south
+74,M,29,71,176,90,1.8,27.77777778,04/12/1932,haredi,1,1,Eilat,south
+75,F,28,65,131,59.42,1.65,21.82552801,,general,0,0,Beer Sheva,south
+76,M,28,74,170,77.11,1.88,21.81699864,,general,0,0,Haifa,north
+77,M,31,48,166,90,1.22,60.46761623,,general,0,0,Nahariah,north
+78,M,42,70,155,70.31,1.78,22.19101124,02/03/1980,general,0,1,Tel Aviv,center
+79,M,39,72,167,60,1.83,17.91633074,,haredi,1,0,Beer Sheva,south
+80,F,30,66,124,56.25,1.68,19.92984694,,haredi,1,0,Jerusalem,center
+81,F,33,66,115,,,,,general,0,0,Tel Aviv,center
+82,F,26,64,121,,,,,haredi,1,0,Ramat Gan,centerr
+83,F,30,71,158,100,1.8,30.86419753,02/03/1990,arab,1,1,Nahariah,north
+84,M,53,72,175,79.38,1.83,23.70330556,,general,0,0,Jerusalem,center
+85,M,32,69,143,,,,,arab,0,0,Jerusalem,center
+86,F,47,69,139,100,1.75,32.65306122,31/12/1970,haredi,1,1,Tel Aviv,center
+87,M,34,72,163,73.94,1.83,22.07889158,,general,0,0,Beer Sheva,south
+88,F,23,62,98,44.45,1.57,18.03318593,,arab,0,0,Tel Aviv,center
+89,M,36,75,160,72.57,1.91,19.89254681,31/12/1994,general,1,1,Haifa,north
+90,M,38,70,145,65.77,1.78,20.75811135,,arab,1,0,Jerusalem,center
+91,F,31,67,135,61.23,1.7,21.18685121,,general,0,0,Tel Aviv,center
+92,M,29,71,176,90,1.8,27.77777778,04/12/1932,haredi,1,1,Eilat,south
+93,F,28,65,131,59.42,1.65,21.82552801,,general,0,0,Beer Sheva,south
+94,M,28,74,170,77.11,1.88,21.81699864,,general,0,0,Haifa,north

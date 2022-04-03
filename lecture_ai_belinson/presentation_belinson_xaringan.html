@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data Cleaning and Data Exploration</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Uriah Finkel" />
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Data Cleaning and Data Exploration
+## Or Things You Need to Do Before Modelling
+### Uriah Finkel
+### Clalit Research Institue
+
+---
+
+
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 110px;
+height: 128px;
+z-index: 0;
+background-image: url(cri.jpg);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:1em;right:1em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+
+
+
+
+# Basic Actions with SQL
+
+When we want to SELECT all columns FROM table in SQL, we do
+
+--
+
+SELECT *
+
+--
+
+FROM clalit_members
+--
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; city &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; age &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; weight &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; height &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; immigrant_date &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77.11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.88 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Nahariah &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.60 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tel Aviv &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80.31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.68 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 02/03/1980 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Beer Sheva &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.73 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jerusalem &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.78 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tel Aviv &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+# Basic Actions with SQL
+
+When we want to SELECT specific columns FROM table in SQL, we need to specify them
+
+--
+
+SELECT id, city, age, weight 
+
+--
+
+FROM clalit_members
+--
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; city &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; age &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; weight &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77.11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Nahariah &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tel Aviv &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80.31 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Beer Sheva &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jerusalem &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76.25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tel Aviv &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Basic Actions with SQL
+
+When we want to SELECT specific observations FROM table we need to specify conditions and tell the DB WHERE too look for 
+
+--
+
+SELECT id, city, age, weight
+
+--
+
+FROM clalit_members
+
+--
+
+WHERE CITY LIKE "Haifa"
+
+--
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; city &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; age &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; weight &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77.11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.57 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77.11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.57 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77.11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 51 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.57 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Basic Actions with SQL
+
+When we want to SELECT aggregating functions we can do it with SELECT
+
+--
+
+SELECT MEAN(AGE)
+
+--
+
+FROM clalit_members
+
+--
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; AGE &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 33.70968 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Basic Actions with SQL
+
+When we want to SELECT aggregating functions grouped by categorical varibable we can do it with SELECT and with GROUP BY
+
+--
+
+SELECT MEAN(AGE)
+
+--
+
+FROM clalit_members
+
+--
+
+GROUP BY city
+
+--
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; city &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AGE &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Beer Sheva &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.31250 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Eilat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Haifa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.63636 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Jerusalem &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.25000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Nahariah &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.50000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ramat Gan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.00000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](inner_join_first_frame.png
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](inner_join.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](full_join_first_frame.png
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](full_join.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](right_join_first_frame.png
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](right_join.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](left_join_first_frame.png
+)]
+
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](left_join.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](left_join_extra_row_first_frame.png
+)]
+
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](left_join_extra_row.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](right_join.gif
+)]
+
+---
+
+### Let's try to run Logistic Regression
+
+
+
+
+
+
+---
+
+# Data Cleaning
+
+
+.center[
+![One more thing](https://i.pinimg.com/originals/ee/67/8f/ee678fd8cdca3ceb21270512aeebae22.gif
+)
+
+Quality data beats fancy algorithms!
+]
+
+---
+
+# Let's use logistic regression
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.low &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.high &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; signif &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.8393171 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3952460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.811268 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0956156 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0178239 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5324916 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.038437 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0749123 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Let's use logistic regression
+
+What is 4 * Blue ?
+
+--
+
+ERROR
+
+
+
+---
+
+# We need to translate names to numbers
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.low &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.high &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; signif &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.6559902 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0184491 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -6.8627740 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6833397 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; * &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0493307 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2227627 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0321881 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1292135 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sectorharedi &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5428029 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0173440 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5865608 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sectorarab &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1388644 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0015775 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8640239 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5543894 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ** &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+### Handling Missing Data
+
+![](presentation_belinson_xaringan_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+
+### Handling Missing Data
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.low &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.high &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; signif &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -16.2999943 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0083734 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -31.5222828 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -6.3051967 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0021366 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9642516 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1037026 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0888632 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sectorharedi &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.3462341 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000088 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.6544266 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.6047543 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sectorarab &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5416839 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0008519 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7185207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0628895 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; height &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7116241 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1228174 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0462390 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0837231 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; weight &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0605853 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1075842 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0059363 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1472337 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+### Handling Missing Values
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.low &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.high &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; signif &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5.0923490 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0056724 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.0385496 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.6819144 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0759869 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0883203 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0125042 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1659432 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; . &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sectorharedi &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.1474634 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5024661 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3078747 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sectorarab &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0119757 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0005588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4317275 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9314604 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; overweightTRUE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9008665 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0152165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4420501 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5763721 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; * &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+### Handling Missing Values
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.low &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.high &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; signif &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5.0343658 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0126930 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -9.3809984 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.2567857 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; * &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0633297 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2019071 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0381978 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1616846 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sectorharedi &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.2534881 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000332 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.4741897 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5908215 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sectorarab &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1789573 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0009460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4593657 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.3304549 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; *** &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; overweightTRUE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3130762 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1750950 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6237376 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3013000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; is_immigrant &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9303114 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0295028 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2303856 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.8011092 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; * &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+`
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

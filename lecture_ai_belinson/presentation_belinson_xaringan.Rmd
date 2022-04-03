@@ -1,0 +1,364 @@
+---
+title: "Data Cleaning and Data Exploration"
+subtitle: "Or Things You Need to Do Before Modelling"
+author: "Uriah Finkel"
+institute: "Clalit Research Institue"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r xaringan-logo, echo=FALSE}
+xaringanExtra::use_logo(
+  image_url = "cri.jpg"
+)
+```
+
+```{r include=FALSE}
+source("script.R")
+
+```
+
+
+
+# Basic Actions with SQL
+
+When we want to SELECT all columns FROM table in SQL, we do
+
+--
+
+SELECT *
+
+--
+
+FROM clalit_members
+--
+
+```{r echo=FALSE}
+knitr::kable(head(dat %>% select(id, city, age, weight, height, immigrant_date)), format = 'html')
+```
+
+
+---
+
+# Basic Actions with SQL
+
+When we want to SELECT specific columns FROM table in SQL, we need to specify them
+
+--
+
+SELECT id, city, age, weight 
+
+--
+
+FROM clalit_members
+--
+
+```{r echo=FALSE}
+knitr::kable(head(dat %>% select(id, city, age, weight)), format = 'html')
+```
+
+---
+
+# Basic Actions with SQL
+
+When we want to SELECT specific observations FROM table we need to specify conditions and tell the DB WHERE too look for 
+
+--
+
+SELECT id, city, age, weight
+
+--
+
+FROM clalit_members
+
+--
+
+WHERE CITY LIKE "Haifa"
+
+--
+
+```{r echo=FALSE}
+knitr::kable(head(dat %>% select(id, city, age, weight) %>% filter(city == "Haifa")), format = 'html')
+```
+
+---
+
+# Basic Actions with SQL
+
+When we want to SELECT aggregating functions we can do it with SELECT
+
+--
+
+SELECT MEAN(AGE)
+
+--
+
+FROM clalit_members
+
+--
+
+```{r echo=FALSE}
+knitr::kable(head(dat %>% select(id, city, age, weight) %>% summarise(AGE = mean(age))), format = 'html')
+```
+
+---
+
+# Basic Actions with SQL
+
+When we want to SELECT aggregating functions grouped by categorical varibable we can do it with SELECT and with GROUP BY
+
+--
+
+SELECT MEAN(AGE)
+
+--
+
+FROM clalit_members
+
+--
+
+GROUP BY city
+
+--
+
+```{r echo=FALSE}
+knitr::kable(head(dat %>% select(id, city, age, weight) %>% 
+                    group_by(city) %>%
+                    summarise(AGE = mean(age))), format = 'html')
+```
+
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](inner_join_first_frame.png
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](inner_join.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](full_join_first_frame.png
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](full_join.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](right_join_first_frame.png
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](right_join.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](left_join_first_frame.png
+)]
+
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](left_join.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](left_join_extra_row_first_frame.png
+)]
+
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](left_join_extra_row.gif
+)]
+
+---
+
+###  Combine Data
+
+.center[
+![Saw](right_join.gif
+)]
+
+---
+
+### Let's try to run Logistic Regression
+
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(plotly)
+library(reshape2)
+
+
+#load data
+
+my_df <- iris
+petal_lm <- lm(Petal.Length ~ 0 + Sepal.Length + Sepal.Width,data = my_df)
+
+graph_reso <- 0.05
+
+#Setup Axis
+axis_x <- seq(min(my_df$Sepal.Length), max(my_df$Sepal.Length), by = graph_reso)
+axis_y <- seq(min(my_df$Sepal.Width), max(my_df$Sepal.Width), by = graph_reso)
+
+#Sample points
+petal_lm_surface <- expand.grid(Sepal.Length = axis_x,Sepal.Width = axis_y,KEEP.OUT.ATTRS = F)
+petal_lm_surface$Petal.Length <- predict.lm(petal_lm, newdata = petal_lm_surface)
+petal_lm_surface <- acast(petal_lm_surface, Sepal.Width ~ Sepal.Length, value.var = "Petal.Length") #y ~ x
+
+
+hcolors=c("red","blue","green")[my_df$Species]
+iris_plot <- plot_ly(my_df,
+                     x = ~Sepal.Length,
+                     y = ~Sepal.Width,
+                     z = ~Petal.Length,
+                     text = ~Species, # EDIT: ~ added
+                     type = "scatter3d",
+                     mode = "markers",
+                     marker = list(color = hcolors))
+
+
+iris_plot <- add_trace(p = iris_plot,
+                       z = petal_lm_surface,
+                       x = axis_x,
+                       y = axis_y,
+                       type = "surface")
+
+iris_plot
+```
+
+
+
+---
+
+# Data Cleaning
+
+
+.center[
+![One more thing](https://i.pinimg.com/originals/ee/67/8f/ee678fd8cdca3ceb21270512aeebae22.gif
+)
+
+Quality data beats fancy algorithms!
+]
+
+---
+
+# Let's use logistic regression
+
+
+```{r echo=FALSE}
+knitr::kable(head(tidy(model1, conf.int = T) %>%
+  mutate(signif = sapply(p.value, function(x) make_stars(x))) %>%
+  select(-std.error, -statistic)), format = 'html')
+```
+
+---
+
+# Let's use logistic regression
+
+What is 4 * Blue ?
+
+--
+
+ERROR
+
+
+
+---
+
+# We need to translate names to numbers
+
+
+```{r echo=FALSE}
+knitr::kable(head(tidy(model2, conf.int = T) %>%
+  mutate(signif = sapply(p.value, function(x) make_stars(x))) %>%
+  select(-std.error, -statistic)), format = 'html')
+```
+
+---
+
+### Handling Missing Data
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+naniar::vis_miss(dat %>%
+                   select(height, weight, age,covid, sector, immigrant_date))
+```
+
+---
+
+### Handling Missing Data
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(head(tidy(model3, conf.int = T) %>%
+  mutate(signif = sapply(p.value, function(x) make_stars(x))) %>%
+  select(-std.error, -statistic)), format = 'html')
+```
+
+---
+
+### Handling Missing Values
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(head(tidy(model5, conf.int = T) %>%
+  mutate(signif = sapply(p.value, function(x) make_stars(x))) %>%
+  select(-std.error, -statistic)), format = 'html')
+```
+
+---
+
+### Handling Missing Values
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(head(tidy(model6, conf.int = T) %>%
+  mutate(signif = sapply(p.value, function(x) make_stars(x))) %>%
+  select(-std.error, -statistic)), format = 'html')
+```
+
+`
+
+
+
